@@ -125,7 +125,9 @@ public class SunshineFaceService extends CanvasWatchFaceService {
         Paint mDatePaint;
         Paint mHighPaint;
         Paint mLowPaint;
+        Paint mWeatherConditionPaint;
         boolean mAmbient;
+        boolean mIsRound;
         Calendar mCalendar;
         boolean mShouldDrawColons;
 
@@ -231,6 +233,7 @@ public class SunshineFaceService extends CanvasWatchFaceService {
                     SunshineFaceService.this, R.color.digital_text),
                     lightTypeface);
             mLowPaint.setAlpha(DATE_ALPHA);
+            mWeatherConditionPaint = new Paint();
         }
 
         @Override
@@ -295,18 +298,18 @@ public class SunshineFaceService extends CanvasWatchFaceService {
 
             // Load resources that have alternate values for round watches.
             Resources resources = SunshineFaceService.this.getResources();
-            boolean isRound = insets.isRound();
-            float textSize = resources.getDimension(isRound
+            mIsRound = insets.isRound();
+            float textSize = resources.getDimension(mIsRound
                     ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
 
             mHourPaint.setTextSize(textSize);
             mMinutesPaint.setTextSize(textSize);
 
-            float dateTextSize = resources.getDimension(isRound
+            float dateTextSize = resources.getDimension(mIsRound
                     ? R.dimen.digital_date_text_size_round : R.dimen.digital_date_text_size);
             mDatePaint.setTextSize(dateTextSize);
 
-            float tempTextSize = resources.getDimension(isRound
+            float tempTextSize = resources.getDimension(mIsRound
                     ? R.dimen.digital_temp_text_size_round : R.dimen.digital_temp_text_size);
 
             mHighPaint.setTextSize(tempTextSize);
@@ -448,9 +451,13 @@ public class SunshineFaceService extends CanvasWatchFaceService {
                     yDateOffSet + mDatePaint.getTextSize(),
                     mLinePaint);
 
-            float xHighOffSet =
-                    bounds.exactCenterX();
-            float yHighOffSet = bounds.bottom - mYOffset + mHighPaint.getTextSize();
+            float xHighOffSet = bounds.exactCenterX();
+            float yHighOffSet;
+            if (mIsRound){
+                yHighOffSet = bounds.bottom - mYOffset + mHighPaint.getTextSize();
+            }else {
+                yHighOffSet = bounds.bottom - mYOffset + mHighPaint.getTextSize()*2;
+            }
             if (highTemp != null) {
                 xHighOffSet -= mHighPaint.measureText(highTemp + " " + lowTemp) / 2;
                 canvas.drawText(String.format("%s", highTemp), xHighOffSet, yHighOffSet, mHighPaint);
@@ -462,7 +469,19 @@ public class SunshineFaceService extends CanvasWatchFaceService {
             }
 
             if (weatherCondition != null && !mAmbient) {
-                canvas.drawBitmap(weatherCondition, bounds.exactCenterX()/2, yHighOffSet, new Paint());
+
+                float yOffSet;
+                if (mIsRound){
+                    yOffSet = yHighOffSet;
+                }else {
+                    yOffSet = yHighOffSet - mHighPaint.getTextSize();
+                }
+
+                canvas.drawBitmap(
+                        weatherCondition,
+                        bounds.exactCenterX() - weatherCondition.getWidth()/2,
+                        yOffSet,
+                        mWeatherConditionPaint);
             }
 
             if (!mAmbient) {
