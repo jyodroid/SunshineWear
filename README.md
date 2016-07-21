@@ -2,24 +2,32 @@ Advanced Android Sample App
 ===================================
 
 Synchronizes weather information from OpenWeatherMap on Android Phones and Tablets. Used in the Udacity Advanced Android course.
+The App has its own watch face that sync the weather information on wearables.
 
-Pre-requisites
+*Pre-requisites*
+For App
 --------------
 Android SDK 21 or Higher
-Build Tools version 21.1.2
-Android Support AppCompat 22.2.0
-Android Support Annotations 22.2.0
-Android Support GridLayout 22.2.0
-Android Support CardView 22.2.0
-Android Support Design 22.2.0
-Android Support RecyclerView 22.2.0
-Google Play Services GCM 7.0.0
+Build Tools version 22.0.1
+Android Support AppCompat 22.0.1
+Android Support Annotations 22.0.1
+Android Support GridLayout 22.0.1
+Android Support CardView 22.0.1
+Android Support Design 22.0.1
+Android Support RecyclerView 22.0.1
+Google Play Services GCM 8.4.0
 BumpTech Glide 3.5.2
 
+For Wearable
+--------------
+Android SDK 23 or Higher
+Build Tools version 23.0.3
+Google Play Services GCM 8.4.0
+Google Support Wearable 2.0.0-alpha1
 
 Getting Started
 ---------------
-This sample uses the Gradle build system.  To build this project, use the
+This sample uses the Gradle build system. To build this project, use the
 "gradlew build" command or use "Import Project" in Android Studio.
 
 Support
