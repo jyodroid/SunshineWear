@@ -107,6 +107,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         public void onItemSelected(Uri dateUri, ForecastAdapter.ForecastAdapterViewHolder vh);
     }
 
+    public interface OnWeatherChangeListener {
+        public void changedData(String high, String low, int weatherId);
+    }
+
     public ForecastFragment() {
     }
 
@@ -368,6 +372,21 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     return false;
                 }
             });
+
+            Cursor cursor = mForecastAdapter.getCursor();
+            //Send data for today to wearable
+            if (null != cursor) {
+                cursor.moveToNext();
+                double max = cursor.getDouble(COL_WEATHER_MAX_TEMP);
+                double low = cursor.getDouble(COL_WEATHER_MIN_TEMP);
+                int weatherId = cursor.getInt(COL_WEATHER_CONDITION_ID);
+                String maxString = Utility.formatTemperature(getContext(), max);
+                String lowString = Utility.formatTemperature(getContext(), low);
+                ((OnWeatherChangeListener) getActivity())
+                        .changedData(maxString, lowString, weatherId);
+            } else {
+                Log.e(LOG_TAG, "No data to send in content provider");
+            }
         }
 
     }

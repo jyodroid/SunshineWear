@@ -6,7 +6,7 @@ android {
     buildToolsVersion '23.0.3'
 
     defaultConfig {
-        applicationId "com.jyo.android.sunshinewear"
+        applicationId "com.example.android.sunshine.app"
         minSdkVersion 22
         targetSdkVersion 24
         versionCode 1
@@ -23,5 +23,5 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.google.android.support:wearable:2.0.0-alpha1'
-    compile 'com.google.android.gms:play-services-wearable:9.2.0'
+    compile 'com.google.android.gms:play-services-wearable:8.4.0'
 }
